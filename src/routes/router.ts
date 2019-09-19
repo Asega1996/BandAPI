@@ -15,12 +15,18 @@ export class Routes {
             })
         });
         app.route('/musician')
-        //GET Student
+        //GET Musicians
         .get(MusicianController.retrieveAll.bind(MusicianController.retrieveAll))
-        //POST Student
-        .post();
+        //POST Create a new musician
+        .post(MusicianController.create.bind(MusicianController.retrieveById));
+
+        
         app.route('/musician/:id')
+        //GET Musician by ObjectId
         .get(MusicianController.retrieveById.bind(MusicianController.retrieveById))
+        .post(MusicianController.delete.bind(MusicianController.delete))
+        .put(MusicianController.update.bind(MusicianController.update))
+
         
 
     }
