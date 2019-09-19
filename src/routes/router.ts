@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import MusicianController from '../musician/Musician.controller'
+import MusicianController from '../musician/Musician.controller';
+import InstrumentController from '../instruments/Instrument.controller';
 
 export class Routes {  
 
@@ -14,14 +15,25 @@ export class Routes {
                 message: 'NODE_REST API'
             })
         });
+
+        //MUSICIAN
         app.route('/musician')
-        //GET Student
+        //GET Musician
         .get(MusicianController.retrieveAll.bind(MusicianController.retrieveAll))
-        //POST Student
+        //POST Musician
         .post();
         app.route('/musician/:id')
         .get(MusicianController.retrieveById.bind(MusicianController.retrieveById))
-        
+
+
+        //INSTRUMENTS
+        app.route('/instrument')
+        //GET Instrument
+        .get(InstrumentController.retrieveAll.bind(InstrumentController.retrieveAll))
+        app.route('/instrument/:id')
+        .get(InstrumentController.retrieveById.bind(InstrumentController.retrieveById))
+        .put(InstrumentController.update.bind(InstrumentController.update))
+        .post(InstrumentController.delete.bind(InstrumentController.delete))
 
     }
 }

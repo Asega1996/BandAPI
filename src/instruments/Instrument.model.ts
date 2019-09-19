@@ -1,22 +1,16 @@
 import * as mongoose from 'mongoose';
-import { Instrument } from './instrument.interface'
+import { Instrument } from './Instrument.interface'
 
 export interface IInstrumentModel extends Instrument {}
 
 const InstrumentSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: 'Enter a first name'
+        required: 'The instrument must have a name'
     },
     type: {
         type: String,
-        required: 'Enter a last name'
-    },
-    phone: {
-        type: Number            
-    },
-    instrument: {
-        type: String
+        required: 'The instrument must have a type'
     },
     updatedAt: { 
         type: Date, default: Date.now 
@@ -30,17 +24,6 @@ const InstrumentSchema = new mongoose.Schema({
     
 });
 
-/*
-MusicianSchema.pre('save', function(next){
-    this.update({}, { $set: { updatedAt : Date.now() } })
-
-});
-
-MusicianSchema.pre('update', function(next){
-    this.update({}, { $set: { updatedAt : Date.now() } })
-
-});
-*/
 
 export const InstrumentModel : mongoose.Model<IInstrumentModel> = 
                 mongoose.model('Instrument', InstrumentSchema) as mongoose.Model<IInstrumentModel>
