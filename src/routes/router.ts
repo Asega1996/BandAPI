@@ -18,11 +18,14 @@ export class Routes {
 
         //MUSICIAN
         app.route('/musician')
-        //GET Musician
+        //GET Musicians
         .get(MusicianController.retrieveAll.bind(MusicianController.retrieveAll))
-        //POST Musician
-        .post();
+        //POST Create a new musician
+        .post(MusicianController.create.bind(MusicianController.retrieveById));
+
+        
         app.route('/musician/:id')
+        //GET Musician by ObjectId
         .get(MusicianController.retrieveById.bind(MusicianController.retrieveById))
 
 
@@ -30,6 +33,7 @@ export class Routes {
         app.route('/instrument')
         //GET Instrument
         .get(InstrumentController.retrieveAll.bind(InstrumentController.retrieveAll))
+        .post(InstrumentController.create.bind(InstrumentController.create))
         app.route('/instrument/:id')
         .get(InstrumentController.retrieveById.bind(InstrumentController.retrieveById))
         .put(InstrumentController.update.bind(InstrumentController.update))
