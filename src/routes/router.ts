@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import MusicianController from '../musician/Musician.controller';
 import InstrumentController from '../instruments/Instrument.controller';
+import ConcertController from '../concert/Concert.controller'
 
 export class Routes {  
 
@@ -41,5 +42,15 @@ export class Routes {
         .put(InstrumentController.update.bind(InstrumentController.update))
         .post(InstrumentController.delete.bind(InstrumentController.delete))
 
+
+        //CONCERTS
+        app.route('/concert')
+        //GET Instrument
+        .get(ConcertController.retrieveAll.bind(ConcertController.retrieveAll))
+        .post(ConcertController.create.bind(ConcertController.create))
+        app.route('/concert/:id')
+        .get(ConcertController.retrieveById.bind(ConcertController.retrieveById))
+        .put(ConcertController.update.bind(ConcertController.update))
+        .post(ConcertController.delete.bind(ConcertController.delete))
     }
 }
