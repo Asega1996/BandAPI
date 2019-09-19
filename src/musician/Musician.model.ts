@@ -35,17 +35,5 @@ const MusicianSchema = new mongoose.Schema({
     
 });
 
-/*
-MusicianSchema.pre('save', function(next){
-    this.update({}, { $set: { updatedAt : Date.now() } })
-
-});
-
-MusicianSchema.pre('update', function(next){
-    this.update({}, { $set: { updatedAt : Date.now() } })
-
-});
-*/
-
 export const MusicianModel : mongoose.Model<IMusicianModel> = 
-                mongoose.model('Musician', MusicianSchema) as mongoose.Model<IMusicianModel>
+    mongoose.model('Musician', MusicianSchema) as mongoose.Model<IMusicianModel>
