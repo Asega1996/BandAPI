@@ -30,6 +30,10 @@ export class MusicianService {
     public delete(id: string): Promise<Musician> {
         return MusicianRepository.delete(id);
     }
+
+    public remove(id: string): Promise<Musician> {
+      return MusicianRepository.remove(id);
+  }
     
 
 }
