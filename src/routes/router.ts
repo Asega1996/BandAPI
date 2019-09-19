@@ -3,11 +3,8 @@ import MusicianController from '../musician/Musician.controller'
 
 export class Routes {  
 
-    private ms : MusicianController;
-
-    constructor() {
-        this.ms = new MusicianController(); 
-    }
+    
+    constructor() { }
 
     public setRoutes(app): void {          
         app.route('/')
@@ -19,9 +16,11 @@ export class Routes {
         });
         app.route('/musician')
         //GET Student
-        .get(this.ms.retrieveAll.bind(this.ms.retrieveAll))
+        .get(MusicianController.retrieveAll.bind(MusicianController.retrieveAll))
         //POST Student
         .post();
+        app.route('/musician/:id')
+        .get(MusicianController.retrieveById.bind(MusicianController.retrieveById))
         
 
     }

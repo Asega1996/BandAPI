@@ -4,7 +4,8 @@
   "description": "(Nodejs + Express + Mongo + Typescript) API",
   "main": "server.js",
   "scripts": {
-    "dev": "ts-node ./src/server.ts"
+    "dev": "ts-node ./src/server.ts --inspect",
+    "nodemon": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/server"
   },
   "repository": {
     "type": "git",
