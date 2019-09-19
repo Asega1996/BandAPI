@@ -1,0 +1,30 @@
+[{
+	"name": "Guitar",
+	"type": "String",
+	"createdAt": "2019-09-19T09:49:37.169Z",
+	"updatedAt": "2019-09-19T09:49:37.169Z",
+	"isActive" : true
+},
+{
+	"name": "Battery",
+	"type": "Percussion",
+	"createdAt": "2019-09-19T09:49:37.169Z",
+	"updatedAt": "2019-09-19T09:49:37.169Z",
+	"isActive" : true
+},
+{
+	"name": "Trumpet",
+	"type": "Wind",
+	"createdAt": "2019-09-19T09:49:37.169Z",
+	"updatedAt": "2019-09-19T09:49:37.169Z",
+	"isActive" : true
+},
+{
+	"name": "Vocal",
+	"type": "Main Vocalist",
+	"createdAt": "2019-09-19T09:49:37.169Z",
+	"updatedAt": "2019-09-19T09:49:37.169Z",
+	"isActive" : true
+}
+]
+
