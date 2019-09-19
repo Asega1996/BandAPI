@@ -39,6 +39,13 @@ class MusicianController {
         }).catch(err => console.log(err));
     }
 
+    public remove(req: Request, res: Response): void {
+        const id: string = req.params.id;
+        MusicianService.remove(id).then(result => {
+            res.status(200).json(result);
+        }).catch(err => console.log(err));
+    }
+
     public update(req: Request, res: Response): void {
         const id = req.params.id;
         const musician = req.body as Musician

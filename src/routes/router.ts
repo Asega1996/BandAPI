@@ -21,12 +21,14 @@ export class Routes {
         //GET Musicians
         .get(MusicianController.retrieveAll.bind(MusicianController.retrieveAll))
         //POST Create a new musician
-        .post(MusicianController.create.bind(MusicianController.retrieveById));
+        .post(MusicianController.create.bind(MusicianController.create));
 
         
         app.route('/musician/:id')
         //GET Musician by ObjectId
         .get(MusicianController.retrieveById.bind(MusicianController.retrieveById))
+        .put(MusicianController.update.bind(MusicianController.update))
+        .post(MusicianController.delete.bind(MusicianController.delete))
 
 
         //INSTRUMENTS

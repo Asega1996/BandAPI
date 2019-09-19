@@ -2,7 +2,10 @@
 	"firstName" : "Philip H.",
 	"lastName" : "Anselmo",
 	"phone" : 956314215,
-	"instrument" : "Vocal",
+	"instrument" : {
+		"name": "Vocal",
+		"type": "Main Vocalist"
+	},
 	"createdAt": "2019-09-19T09:49:37.169Z",
 	"updatedAt": "2019-09-19T09:49:37.169Z",
 	"isActive" : true
@@ -11,7 +14,10 @@
 	"firstName" : "Darrell Lance",
 	"lastName" : "About",
 	"phone" : 956314216,
-	"instrument" : "Guitar",
+	"instrument" : {
+		"name": "Guitar",
+		"type": "String"
+	},
 	"createdAt": "2019-09-19T09:49:37.169Z",
 	"updatedAt": "2019-09-19T09:49:37.169Z",
 	"isActive" : true
@@ -20,7 +26,10 @@
 	"firstName" : "Vinnie Paul",
 	"lastName" : "About",
 	"phone" : 956314215,
-	"instrument" : "Battery",
+	"instrument" : {
+		"name": "Battery",
+		"type": "Percussion"
+	},
 	"createdAt": "2019-09-19T09:49:37.169Z",
 	"updatedAt": "2019-09-19T09:49:37.169Z",
 	"isActive" : true

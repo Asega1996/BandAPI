@@ -16,7 +16,12 @@ const MusicianSchema = new mongoose.Schema({
         type: Number            
     },
     instrument: {
-        type: String
+        name: {
+            type: String
+        },
+        type:{
+            type: String
+        }
     },
     updatedAt: { 
         type: Date, default: Date.now 
