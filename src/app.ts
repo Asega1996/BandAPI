@@ -2,6 +2,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as mongoose from "mongoose";
 import { Routes } from "./routes/router"
+import { env } from "./config/config"
 
 
 export class App {
@@ -10,7 +11,7 @@ export class App {
     public router : Routes
 
     //Para encapsular mas tarde
-    public mongoUrl: string = 'mongodb://localhost:27017/banddatabase';  
+    public mongoUrl: string = '';  
     
 
     constructor() {
@@ -28,7 +29,7 @@ export class App {
 
     private setUpDbConnection(): void {
         (<any>mongoose).Promise = global.Promise;
-        mongoose.connect(this.mongoUrl, { useNewUrlParser: true });    
+        mongoose.connect(env.MONGO_CONNNECTION_STRING, { useNewUrlParser: true });    
     }
 
     public run(PORT : number): void {

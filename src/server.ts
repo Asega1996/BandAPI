@@ -1,6 +1,6 @@
 import { App } from './app';
+import { env } from "./config/config";
 
-const PORT = 3000;
 const APP = new App();
 
-APP.run(PORT);
+APP.run(env.PORT);
