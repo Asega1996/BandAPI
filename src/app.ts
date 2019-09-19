@@ -29,7 +29,7 @@ export class App {
 
     private setUpDbConnection(): void {
         (<any>mongoose).Promise = global.Promise;
-        mongoose.connect(env.MONGO_CONNNECTION_STRING, { useNewUrlParser: true });    
+        mongoose.connect(env.MONGO_CONNNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});    
     }
 
     public run(PORT : number): void {
