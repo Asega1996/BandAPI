@@ -3,12 +3,15 @@ import MusicianController from '../musician/Musician.controller';
 import InstrumentController from '../instruments/Instrument.controller';
 import ConcertController from '../concert/Concert.controller'
 
+var cors = require('cors')
+
 export class Routes {  
 
     
     constructor() { }
 
-    public setRoutes(app): void {          
+    public setRoutes(app): void {   
+        app.use(cors());       
         app.route('/')
         //GET Main-Route
         .get((req: Request, res: Response) => {            
