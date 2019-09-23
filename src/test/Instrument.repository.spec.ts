@@ -3,7 +3,7 @@ import InstrumentRepository from '../instruments/Instrument.repository'
 import { Instrument } from 'instruments/Instrument.interface'
 import { App } from '../app';
 
-describe('InstrumentRepository', () => {
+describe('InstrumentsRepository', () => {
 
     it('should check the population of the instruments', async () => {
         let musicians: Array<Instrument> = new Array();
