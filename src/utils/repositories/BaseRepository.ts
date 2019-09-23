@@ -24,7 +24,6 @@ export default abstract class BaseRepository<T1 extends Base, T2 extends T1> {
     public remove(id: string): Promise<T2 | null> {
         return new Promise((resolve, reject) => {
             this.retrieveById(id).then(found => {
-                console.log('aqui')
             return (found)? this.model.deleteOne(found) : Promise.resolve(null);
 
             })

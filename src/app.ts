@@ -38,5 +38,12 @@ export class App {
         });
     }
 
+    public delete(PORT : number): void {
+        let server = this.app.listen(PORT);
+        server.close();
+    }
+
 
 }
+
+export default new App()

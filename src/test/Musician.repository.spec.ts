@@ -6,10 +6,11 @@ import { App } from '../app';
 
 describe('MusicianRepository', () => {
 
-    //Setup APP
+
+    let APP = new App();
     const PORT = 3000;
-    const APP = new App();
     APP.run(PORT);
+    
 
     it('should check the population of the band', async () => {
         let musicians: Array<Musician> = new Array();
