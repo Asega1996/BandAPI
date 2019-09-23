@@ -13,8 +13,10 @@ export class ConcertService {
         });
       }
     
-    public create(Concert: Concert): Promise<Concert> {
-        return ConcertRepository.create(Concert);
+    public create(concert: Concert): Promise<Concert | null> {
+      (concert.dateStart <= concert.dateEnd || concert.dateEnd == null || concert.dateStart == null)? console.log('Bien'): console.log('mal')
+        return (concert.dateStart <= concert.dateEnd || concert.dateEnd == null || concert.dateStart == null)?
+         ConcertRepository.create(concert) : ConcertRepository.retrieveById('11111111111111111111111a');
     }
     
     public update(id: string, toUpdate: Concert): Promise<Concert | null> {
