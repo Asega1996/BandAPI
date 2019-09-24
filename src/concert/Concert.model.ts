@@ -4,6 +4,9 @@ import { Concert } from './Concert.interface'
 export interface IConcertModel extends Concert { }
 
 const ConcertSchema = new mongoose.Schema({
+    name:{
+        type: String
+    },
     dateStart: {
         type: Date
     },

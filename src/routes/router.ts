@@ -57,5 +57,15 @@ export class Routes {
         .get(ConcertController.retrieveById.bind(ConcertController.retrieveById))
         .put(ConcertController.update.bind(ConcertController.update))
         .post(ConcertController.delete.bind(ConcertController.delete))
+        .delete(ConcertController.remove.bind(ConcertController.remove))
+
+
+        app.route('/oauth')
+        .get((req: Request, res: Response) => {            
+            res.send();
+        })
+        .post((req: Request, res: Response) => {            
+            res.send();
+        });
     }
 }

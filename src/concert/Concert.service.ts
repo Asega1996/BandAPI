@@ -1,7 +1,143 @@
 import ConcertRepository from './Concert.repository'
 import { Concert } from "./Concert.interface";
 
+const fs = require('fs');
+const readline = require('readline');
+const {google} = require('googleapis');
+let auth = {}
+
+
+export function json2array(json){
+  var result = [];
+  var keys = Object.keys(json);
+  keys.forEach(function(key){
+      result.push(json[key]);
+  });
+  return result;
+}
+
+const TOKEN_PATH = 'token.json';
+
+const SCOPES = ['https://www.googleapis.com/auth/calendar'];
+
+function authorize(credentials, callback) {
+  const {client_secret, client_id, redirect_uris} = credentials.web;
+  const oAuth2Client = new google.auth.OAuth2(
+      client_id, client_secret,redirect_uris[0]);
+ 
+  // Check if we have previously stored a token.
+  fs.readFile(TOKEN_PATH, (err, token) => {
+    if (err) return getAccessToken(oAuth2Client, callback);
+    oAuth2Client.setCredentials(JSON.parse(token));
+    callback(oAuth2Client);
+  });
+}
+
+function authorizeCreation(credentials, callback, event) {
+  const {client_secret, client_id, redirect_uris} = credentials.web;
+  const oAuth2Client = new google.auth.OAuth2(
+      client_id, client_secret,redirect_uris[0]);
+ 
+  // Check if we have previously stored a token.
+  fs.readFile(TOKEN_PATH, (err, token) => {
+    if (err) return getAccessToken(oAuth2Client, callback);
+    oAuth2Client.setCredentials(JSON.parse(token));
+    callback(oAuth2Client,event);
+  });
+}
+
+
+
+function getAccessToken(oAuth2Client, callback) {
+  const authUrl = oAuth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: SCOPES,
+  });
+  console.log('Authorize this app by visiting this url:', authUrl);
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt : 'consent'
+  });
+  rl.question('Enter the code from that page here: ', (code) => {
+    rl.close();
+    oAuth2Client.getToken(code, (err, token) => {
+      if (err) return console.error('Error retrieving access token', err);
+      oAuth2Client.setCredentials(token);
+      // Store the token to disk for later program executions
+      fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => { 
+        if (err) return console.error(err);
+        console.log('Token stored to', TOKEN_PATH);
+      });
+      callback(oAuth2Client);
+    });
+  });
+}
+
+
+function listEvents(auth,event) {
+  const calendar = google.calendar({version: 'v3', auth});
+  calendar.events.list({
+    calendarId: 'alum.uca.es_8ae6btd4gija8fe70sqc8a9864@group.calendar.google.com',
+    maxResults: 10,
+    singleEvents: true,
+    orderBy: 'startTime',
+  }, (err, res) => {
+    if (err) return console.log('The API returned an error: ' + err);
+    const events = res.data.items;
+    console.log(events);
+    if (events.length) {
+      console.log('Upcoming 10 events:');
+      events.map((event, i) => {
+        const start = event.start.dateTime || event.start.date;
+        console.log(`${start} - ${event.summary}`);
+      });
+    } else {
+      console.log('No upcoming events found.');
+    }
+  });
+}
+
+
+function createEvent(auth,event) {
+
+  
+  const calendar = google.calendar({version: 'v3', auth});
+  calendar.events.insert({
+    auth: auth,
+    calendarId: 'alum.uca.es_8ae6btd4gija8fe70sqc8a9864@group.calendar.google.com',
+    resource: event,
+  }, function(err, event) {
+    if (err) {
+      console.log('There was an error contacting the Calendar service: ' + err);
+      return;
+    }
+    console.log('Event created: %s', event.htmlLink);
+  });
+}
+
+
+
 export class ConcertService {
+
+
+    /**
+     *
+     */
+    constructor() {
+      this.setConfig();
+      
+    }
+
+    setConfig(){
+
+
+      fs.readFile('client_secret.json', (err, content) => {
+        if (err) return console.log('Error loading client secret file:', err);
+        // Authorize a client with credentials, then call the Google Calendar API.
+        authorize(JSON.parse(content), listEvents);
+      });
+    }
 
     public retrieveAll(search = {}): Promise<Concert[]> {
         return ConcertRepository.retrieveAll(search);
@@ -14,9 +150,33 @@ export class ConcertService {
       }
     
     public create(concert: Concert): Promise<Concert | null> {
-      (concert.dateStart <= concert.dateEnd || concert.dateEnd == null || concert.dateStart == null)? console.log('Bien'): console.log('mal')
+
+      var event = {
+        'summary': concert.name,
+        'location': '',
+        'description': '',
+        'start': {
+          'dateTime': concert.dateStart,
+        },
+        'end': {
+          'dateTime': concert.dateEnd,
+        },
+        'attendees': [
+          {'email': 'alejandro.segoviagallado@gmail.com'},
+        ]
+      };
+
+      fs.readFile('client_secret.json', (err, content) => {
+        if (err) return console.log('Error loading client secret file:', err);
+        // Authorize a client with credentials, then call the Google Calendar API.
+        authorizeCreation(JSON.parse(content), createEvent ,event);
+      });
+
+      
+      
         return (concert.dateStart <= concert.dateEnd || concert.dateEnd == null || concert.dateStart == null)?
          ConcertRepository.create(concert) : ConcertRepository.retrieveById('11111111111111111111111a');
+         
     }
     
     public update(id: string, toUpdate: Concert): Promise<Concert | null> {
@@ -31,6 +191,10 @@ export class ConcertService {
     public delete(id: string): Promise<Concert> {
         return ConcertRepository.delete(id);
     }
+
+    public remove(id: string): Promise<Concert> {
+      return ConcertRepository.remove(id);
+  }
     
 
 }
