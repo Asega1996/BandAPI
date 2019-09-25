@@ -6,14 +6,6 @@ const readline = require('readline');
 const {google} = require('googleapis');
 
 
-export function json2array(json){
-  var result = [];
-  var keys = Object.keys(json);
-  keys.forEach(function(key){
-      result.push(json[key]);
-  });
-  return result;
-}
 
 const TOKEN_PATH = 'token.json';
 
@@ -161,14 +153,13 @@ export class ConcertService {
      *
      */
     constructor() {
-      this.setConfig();
-      
+      this.fetchCalendar()
     }
 
-    setConfig(){
+    async fetchCalendar(){
 
 
-      fs.readFile('client_secret.json', (err, content) => {
+      await fs.readFile('client_secret.json', (err, content) => {
         if (err) return console.log('Error loading client secret file:', err);
         // Authorize a client with credentials, then call the Google Calendar API.
         authorize(JSON.parse(content), listEvents);
@@ -185,7 +176,7 @@ export class ConcertService {
         });
       }
     
-    public create(concert: Concert): Promise<Concert | null> {
+    public async create(concert: Concert): Promise<Concert | null> {
 
       var event = {
         'summary': concert.name,
@@ -226,7 +217,7 @@ export class ConcertService {
 
     public async remove(id: string): Promise<Concert> {
 
-      this.setConfig();
+      await this.fetchCalendar();
 
       let concert = await ConcertRepository.retrieveById(id);
       if(concert != null){
