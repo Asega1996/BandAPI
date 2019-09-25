@@ -21,6 +21,9 @@ const ConcertSchema = new mongoose.Schema({
     },
     isActive:{
         type: Boolean, default: true
+    },
+    googleCalendarId:{
+        type: String, default:''
     }
 });
 

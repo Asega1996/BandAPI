@@ -38,10 +38,18 @@ class InstrumentController {
         }).catch(err => console.log(err));
     }
 
+    public remove(req: Request, res: Response): void {
+        const id: string = req.params.id;
+        InstrumentService.remove(id).then(result => {
+            res.status(200).json(result);
+        }).catch(err => console.log(err));
+    }
+
     public update(req: Request, res: Response): void {
-        const id = req.params.id;
-        const Instrument = req.body as Instrument
-        InstrumentService.update(id,Instrument).then(result => {
+        
+        const instrument = req.body as Instrument
+        const id = instrument._id;
+        InstrumentService.update(id,instrument).then(result => {
             res.status(200).json(result);
         }).catch(err => console.log(err));
     }

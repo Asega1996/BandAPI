@@ -47,8 +47,9 @@ class MusicianController {
     }
 
     public update(req: Request, res: Response): void {
-        const id = req.params.id;
+        
         const musician = req.body as Musician
+        const id = musician._id;
         MusicianService.update(id,musician).then(result => {
             res.status(200).json(result);
         }).catch(err => console.log(err));

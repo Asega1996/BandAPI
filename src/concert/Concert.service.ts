@@ -4,7 +4,6 @@ import { Concert } from "./Concert.interface";
 const fs = require('fs');
 const readline = require('readline');
 const {google} = require('googleapis');
-let auth = {}
 
 
 export function json2array(json){
@@ -46,6 +45,20 @@ function authorizeCreation(credentials, callback, event) {
   });
 }
 
+function authorizeDelete(credentials, callback, id) {
+  const {client_secret, client_id, redirect_uris} = credentials.web;
+  const oAuth2Client = new google.auth.OAuth2(
+      client_id, client_secret,redirect_uris[0]);
+ 
+  // Check if we have previously stored a token.
+  fs.readFile(TOKEN_PATH, (err, token) => {
+    if (err) return getAccessToken(oAuth2Client, callback);
+    oAuth2Client.setCredentials(JSON.parse(token));
+    callback(oAuth2Client,id);
+  });
+}
+
+
 
 
 function getAccessToken(oAuth2Client, callback) {
@@ -75,26 +88,32 @@ function getAccessToken(oAuth2Client, callback) {
 }
 
 
-function listEvents(auth,event) {
+function listEvents(auth) {
   const calendar = google.calendar({version: 'v3', auth});
   calendar.events.list({
     calendarId: 'alum.uca.es_8ae6btd4gija8fe70sqc8a9864@group.calendar.google.com',
-    maxResults: 10,
     singleEvents: true,
     orderBy: 'startTime',
-  }, (err, res) => {
+  }, async (err, res) => {
     if (err) return console.log('The API returned an error: ' + err);
     const events = res.data.items;
-    console.log(events);
     if (events.length) {
-      console.log('Upcoming 10 events:');
+      let concerts = await ConcertRepository.retrieveAll();
+      console.log('Upcoming events:');
       events.map((event, i) => {
+        concerts.forEach(concert => {
+          if(concert.name == event.summary && concert.googleCalendarId == ''){ 
+            console.log(concerts[i].name)
+            concert.googleCalendarId = event.id
+            ConcertRepository.update(concert.id,concert);
+          }
+        });
         const start = event.start.dateTime || event.start.date;
         console.log(`${start} - ${event.summary}`);
       });
     } else {
       console.log('No upcoming events found.');
-    }
+    } 
   });
 }
 
@@ -113,6 +132,23 @@ function createEvent(auth,event) {
       return;
     }
     console.log('Event created: %s', event.htmlLink);
+  });
+}
+
+function deleteEvent(auth,id) {
+
+  
+  const calendar = google.calendar({version: 'v3', auth});
+  calendar.events.delete({
+    auth: auth,
+    eventId: id,
+    calendarId: 'alum.uca.es_8ae6btd4gija8fe70sqc8a9864@group.calendar.google.com',
+  }, function(err, event) {
+    if (err) {
+      console.log('There was an error contacting the Calendar service: ' + err);
+      return;
+    }
+    console.log('Event deleted');
   });
 }
 
@@ -160,10 +196,7 @@ export class ConcertService {
         },
         'end': {
           'dateTime': concert.dateEnd,
-        },
-        'attendees': [
-          {'email': 'alejandro.segoviagallado@gmail.com'},
-        ]
+        }
       };
 
       fs.readFile('client_secret.json', (err, content) => {
@@ -172,9 +205,8 @@ export class ConcertService {
         authorizeCreation(JSON.parse(content), createEvent ,event);
       });
 
-      
-      
-        return (concert.dateStart <= concert.dateEnd || concert.dateEnd == null || concert.dateStart == null)?
+     
+      return (concert.dateStart <= concert.dateEnd || concert.dateEnd == null || concert.dateStart == null)?
          ConcertRepository.create(concert) : ConcertRepository.retrieveById('11111111111111111111111a');
          
     }
@@ -192,11 +224,24 @@ export class ConcertService {
         return ConcertRepository.delete(id);
     }
 
-    public remove(id: string): Promise<Concert> {
+    public async remove(id: string): Promise<Concert> {
+
+      this.setConfig();
+
+      let concert = await ConcertRepository.retrieveById(id);
+      if(concert != null){
+        fs.readFile('client_secret.json', (err, content) => {
+          if (err) return console.log('Error loading client secret file:', err);
+          // Authorize a client with credentials, then call the Google Calendar API.
+          authorizeDelete(JSON.parse(content), deleteEvent ,concert.googleCalendarId);
+        });
       return ConcertRepository.remove(id);
+      }
+      else{
+        return ConcertRepository.retrieveById('11111111111111111111111a')
+      }
   }
     
-
 }
 
 export default new ConcertService();

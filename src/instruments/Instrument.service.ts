@@ -25,6 +25,10 @@ export class InstrumentService {
         });
     
       }
+
+    public remove(id: string): Promise<Instrument> {
+      return InstrumentRepository.remove(id);
+    }
     
     public delete(id: string): Promise<Instrument> {
         return InstrumentRepository.delete(id);

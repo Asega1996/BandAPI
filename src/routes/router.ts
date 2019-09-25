@@ -26,6 +26,7 @@ export class Routes {
         .get(MusicianController.retrieveAll.bind(MusicianController.retrieveAll))
         //POST Create a new musician
         .post(MusicianController.create.bind(MusicianController.create))
+        .put(MusicianController.update.bind(MusicianController.update))
 
 
         
@@ -42,10 +43,12 @@ export class Routes {
         //GET Instrument
         .get(InstrumentController.retrieveAll.bind(InstrumentController.retrieveAll))
         .post(InstrumentController.create.bind(InstrumentController.create))
+        .put(InstrumentController.update.bind(InstrumentController.update))
         app.route('/instrument/:id')
         .get(InstrumentController.retrieveById.bind(InstrumentController.retrieveById))
         .put(InstrumentController.update.bind(InstrumentController.update))
         .post(InstrumentController.delete.bind(InstrumentController.delete))
+        .delete(InstrumentController.remove.bind(InstrumentController.remove))
 
 
         //CONCERTS
