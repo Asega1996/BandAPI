@@ -56,6 +56,7 @@ export class Routes {
         //GET Instrument
         .get(ConcertController.retrieveAll.bind(ConcertController.retrieveAll))
         .post(ConcertController.create.bind(ConcertController.create))
+        .put(ConcertController.update.bind(ConcertController.update))
         app.route('/concert/:id')
         .get(ConcertController.retrieveById.bind(ConcertController.retrieveById))
         .put(ConcertController.update.bind(ConcertController.update))

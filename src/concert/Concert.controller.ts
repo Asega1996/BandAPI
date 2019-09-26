@@ -46,9 +46,9 @@ class ConcertController {
     }
 
     public update(req: Request, res: Response): void {
-        const id = req.params.id;
-        const Concert = req.body as Concert
-        ConcertService.update(id,Concert).then(result => {
+        const concert = req.body as Concert
+        const id = concert._id;
+        ConcertService.update(id,concert).then(result => {
             res.status(200).json(result);
         }).catch(err => console.log(err));
     }
