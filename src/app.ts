@@ -3,6 +3,7 @@ import * as bodyParser from "body-parser";
 import * as mongoose from "mongoose";
 import { Routes } from "./routes/router"
 import { env } from "./config/config"
+const expressValidator = require('express-validator')
 
 
 export class App {
@@ -38,5 +39,12 @@ export class App {
         });
     }
 
+    public delete(PORT : number): void {
+        let server = this.app.listen(PORT);
+        server.close();
+    }
+
 
 }
+
+export default new App()

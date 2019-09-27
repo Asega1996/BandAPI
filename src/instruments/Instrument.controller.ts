@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { Request, Response } from 'express';
 import InstrumentService from './Instrument.service'
 import { Instrument } from './Instrument.interface'
+import { checkValidationErrors } from '../utils/validators/validators';
 
 
 class InstrumentController {
@@ -25,6 +26,9 @@ class InstrumentController {
     }
 
     public create(req: Request, res: Response): void {
+
+        checkValidationErrors(req,res);
+
         let Instrument = req.body as Instrument;
         InstrumentService.create(Instrument).then(result => {
             res.status(200).json(result);
@@ -38,10 +42,20 @@ class InstrumentController {
         }).catch(err => console.log(err));
     }
 
+    public remove(req: Request, res: Response): void {
+        const id: string = req.params.id;
+        InstrumentService.remove(id).then(result => {
+            res.status(200).json(result);
+        }).catch(err => console.log(err));
+    }
+
     public update(req: Request, res: Response): void {
-        const id = req.params.id;
-        const Instrument = req.body as Instrument
-        InstrumentService.update(id,Instrument).then(result => {
+
+        checkValidationErrors(req,res);
+        
+        const instrument = req.body as Instrument
+        const id = instrument._id;
+        InstrumentService.update(id,instrument).then(result => {
             res.status(200).json(result);
         }).catch(err => console.log(err));
     }
