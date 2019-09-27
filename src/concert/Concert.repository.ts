@@ -5,7 +5,7 @@ import { Concert } from "./Concert.interface"
 
 
 
-class ConcertRepository extends BaseRepository<Concert, IConcertModel> {
+export class ConcertRepository extends BaseRepository<Concert, IConcertModel> {
 
     constructor() {
       super(ConcertModel);

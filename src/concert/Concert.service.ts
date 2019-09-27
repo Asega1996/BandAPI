@@ -142,8 +142,8 @@ function createEvent(auth,event) : Promise<Concert> {
     concert.dateStart = event.start.dateTime
     concert.dateEnd = event.end.dateTime
     concert.googleCalendarId = event2.data.id
-    ConcertRepository.create(concert);
-    res(concert);
+    
+    res(ConcertRepository.create(concert));
   });
   });
 }
