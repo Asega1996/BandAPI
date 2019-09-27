@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import { Request, Response } from 'express';
 import ConcertService from './Concert.service'
 import { Concert } from './Concert.interface'
+import { checkValidationErrors } from '../utils/validators/validators';
 
 
 class ConcertController {
@@ -25,6 +26,9 @@ class ConcertController {
     }
 
     public create(req: Request, res: Response): void {
+
+        checkValidationErrors(req,res);
+
         let Concert = req.body as Concert;
         ConcertService.create(Concert).then(result => {
             res.status(200).json(result);
@@ -46,6 +50,9 @@ class ConcertController {
     }
 
     public update(req: Request, res: Response): void {
+
+        checkValidationErrors(req,res);
+        
         const concert = req.body as Concert
         const id = concert._id;
         ConcertService.update(id,concert).then(result => {
